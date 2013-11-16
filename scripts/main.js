@@ -21,7 +21,6 @@ require([
   });
 
   function printNotes(notes) {
-    $('#notes-view, #login-view').toggle();
     notes.sort(function(a, b){
       return a.modifydate < b.modifydate;
     });
@@ -51,6 +50,7 @@ require([
     SimpleNote.auth(global.simpleNote.email, password, function(data){
       console.debug('Token: %s', data);
       global.simpleNote.token = data;
+      $('#notes-view, #login-view').toggle();
       SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
     });
 
