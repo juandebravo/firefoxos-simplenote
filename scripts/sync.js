@@ -5,11 +5,14 @@ define(['simplenote'], function(SimpleNote){
     db.notes.clear()
     .done(function() {
       SimpleNote.getNotes(token, email, function(notes){
-        var numNotes = notes.length;
+        var arr = notes.filter(function(note) {
+          return !note.deleted;
+        });
+        var numNotes = arr.length;
         if(numNotes === 0){
           callback();
         }
-        notes.forEach(function(note){
+        arr.forEach(function(note){
           SimpleNote.getNote(token, email, note.key, function(note){
             db.notes.add({
               key: note.key,
