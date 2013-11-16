@@ -38,14 +38,14 @@ require(['zeptojs'], function ($) {
   // Dirty debugging trick, reload on double click
   var lastClick = 0;
   $(document.body).on('click', function(){
-  	var ts = new Date().getTime();
-  	if (ts - lastClick < 300) {
-	  	console.log('double click');
-	  	document.location.reload(true);
-  	}
-  	lastClick = ts;
+    var ts = new Date().getTime();
+    if (ts - lastClick < 300) {
+      console.log('double click');
+      document.location.reload(true);
+    }
+    lastClick = ts;
   });
 
   // The application is now fully bootstrapped!
-  require(['main'])
+  require(['main']);
 });
