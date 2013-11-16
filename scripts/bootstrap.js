@@ -48,13 +48,17 @@ require(['zeptojs', 'global', 'db'], function ($, global, db) {
   });
 
   db.open({
-      server: 'SimpleNote',
-      version: 1,
-      schema: {
-          notes: {
-              key: {keyPath: 'key' , autoIncrement: false },
-          }
+    server: 'SimpleNote',
+    // IMPORTANT: Increase this number if the schema below changes!
+    version: 2,
+    schema: {
+      notes: {
+        key: {keyPath: 'key' , autoIncrement: false },
+        indexes: {
+          modifydate: { }
+        }
       }
+    }
   }).done(function(s) {
       global.db = s;
   });

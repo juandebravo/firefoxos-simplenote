@@ -41,7 +41,7 @@ define(['simplenote', 'when'], function(SimpleNote, when){
   }
 
   function fetchNotes(db) {
-    return db.notes.query().all().execute();
+    return db.notes.query('modifydate').all().desc().execute();
   }
 
   function fetchNote(db, key) {
