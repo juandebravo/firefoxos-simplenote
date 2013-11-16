@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Evernote</title>
+
+    <!-- Shared styles (Firefox OS building blocks) -->
+    <link rel="stylesheet" type="text/css" href="shared/style/headers.css">
+    <link rel="stylesheet" type="text/css" href="shared/style/status.css">
+    <link rel="stylesheet" type="text/css" href="shared/style/input_areas.css">
+    <link rel="stylesheet" type="text/css" href="shared/style/buttons.css">
+    <link rel="stylesheet" type="text/css" href="shared/style/confirm.css">
+    <link rel="stylesheet" type="text/css" href="shared/style_unstable/lists.css">
+
+    <!-- Localization -->
+    <link rel="resource" type="application/l10n" href="locales/locales.ini">
+    <script type="application/javascript" src="shared/js/l10n.js"></script>
+
+    <!-- Specific code -->
+    <link rel="stylesheet" type="text/css" href="style/main.css">
+
+  </head>
+
+  <body>
+    <section id="main-view" class="view" role="region" data-page-position="viewport">
+      <header>
+        <menu type="toolbar">
+          <a href="#" id="settings-open">
+            <span class="icon icon-settings" data-l10n-id="settings">
+              Settings
+            </span>
+          </a>
+        </menu>
+        <h1 data-l10n-id="app-title">Evernote</h1>
+      </header>
+      <article id="login-view" class="view" role="region" data-page-position="viewport">
+        <button class="login" id="login">Login</button>
+      </article>
+      <article id="notes-view" data-type="list">
+        <ul>
+          <li>Loading</li>
+        </ul>
+      </article>
+      <article id="note-view" class="view" role="region" data-page-position="viewport">
+      </article>
+    </section>
+
+    <script data-main="javascript/main" src="bower_components/requirejs/require.js">
+    </script>
+  </body>
+</html>

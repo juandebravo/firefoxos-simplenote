@@ -1,0 +1,26 @@
+{
+  "name": "SimpleNote client for Firefox OS",
+  "description": "Web application for SimpleNote",
+  "version": "0.1",
+  "type": "privileged",
+  "permissions": {
+    "storage": {},
+    "geolocation": {},
+    "systemXHR": {}
+  },
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "Ivan -DrSlump- Montes, Juan de Bravo",
+    "url": "http://pollinimini.net, http://juandebravo.com"
+  },
+  "locales": {
+    "en": {
+      "name": "SimpleNote client for Firefox OS",
+      "description": "Web application for SimpleNote"
+    }
+  },
+  "default_locale": "en",
+  "icons": {
+    "128": "/style/icons/icon.jpeg"
+  }
+}
