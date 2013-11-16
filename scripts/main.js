@@ -19,22 +19,22 @@ require([
   }
 
   ul.on('click', 'a', function(e) {
-    sync.fetchNote(global.db,
-      this.getAttribute('data-key'),
-      function(data) {
-        var content = data.content;
-        if(data.systemtags.indexOf('markdown') != -1) {
-          content = markdown.toHTML(data.content);
-        }
-        $("#note-content").html(content);
-        showView("#note-view");
-      });
+    sync.fetchNote(global.db, this.getAttribute('data-key'))
+    .done(function (data) {
+      var content = data.content;
+      if(data.systemtags.indexOf('markdown') != -1) {
+        content = markdown.toHTML(data.content);
+      }
+      $("#note-content").html(content);
+      showView("#note-view");
+    });
   });
 
   function printNotes() {
     ul.empty();
-    sync.fetchNotes(global.db, function(notes){
-      notes.forEach(function(data) {
+    sync.fetchNotes(global.db)
+    .done(function (notes) {
+      notes.forEach(function (data) {
         var info = data.content.split('\n');
         info = [i for each (i in info) if (i.length > 0)];
         ul.append('<li><a href="#" data-key="'+data.key+'"><p>'+info[0]+'</p><p>'+info[1]+'</p></a></li>');
@@ -46,7 +46,8 @@ require([
     console.debug('No token found in localStorage, authenticating...');
     showView("#login-view");
   } else {
-    sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email, printNotes);
+    sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email)
+    .done(printNotes);
   }
 
   $('#login-button').click(function(e) {
@@ -58,7 +59,8 @@ require([
       console.debug('Token: %s', data);
       global.simpleNote.token = data;
       showView("#main-view");
-      sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email, printNotes);
+      sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email)
+      .done(printNotes);
     });
   });
 

@@ -10,7 +10,8 @@ require.config({
     underscore: '../bower_components/underscore/underscore-min',
     Base64: '../bower_components/js-base64/base64.min',
     markdown: '../bower_components/markdown/lib/markdown',
-    db: '../bower_components/db/index'
+    db: '../bower_components/db/index',
+    when: '../bower_components/when/when'
   },
   // Specific symbol aliasing for *browser* modules
   shim: {
@@ -41,7 +42,6 @@ require(['zeptojs', 'global', 'db'], function ($, global, db) {
   $(document.body).on('click', function(){
     var ts = new Date().getTime();
     if (ts - lastClick < 300) {
-      console.log('double click');
       document.location.reload(true);
     }
     lastClick = ts;

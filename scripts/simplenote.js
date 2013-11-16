@@ -1,5 +1,5 @@
-define(['zeptojs', 'Base64'], function
-      ($, Base64) {
+define(['zeptojs', 'Base64', 'when'], function
+      ($, Base64, when) {
 
   // System tags: pinned, markdown
 
@@ -14,8 +14,10 @@ define(['zeptojs', 'Base64'], function
            callback);
   }
 
-  function getNotes(token, email, callback) {
+  function getNotes(token, email) {
+    var defer = when.defer();
     var results = [];
+
     function getRecursiveNotes(mark) {
       $.getJSON(HOST + pathNotes, {
           auth: token,
@@ -28,19 +30,25 @@ define(['zeptojs', 'Base64'], function
           if (data.mark) {
             return getRecursiveNotes(data.mark);
           }
-          callback(results);
+
+          defer.resolve(results);
         }
       );
     }
+
     // Initiate the requests for notes indices
     getRecursiveNotes();
+
+    return defer.promise;
   }
 
-  function getNote(token, email, key, callback) {
+  function getNote(token, email, key) {
+    var defer = when.defer();
     $.getJSON(HOST + pathNote + key, {
         auth: token,
         email: email},
-      callback);
+      defer.resolve);
+    return defer.promise;
   }
 
   return {

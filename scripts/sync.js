@@ -1,10 +1,14 @@
 
-define(['simplenote'], function(SimpleNote){
+define(['simplenote', 'when'], function(SimpleNote, when){
 
-  function syncNotes(db, token, email, callback) {
+  function syncNotes(db, token, email) {
+    var defer = when.defer();
+
     db.notes.clear()
     .done(function() {
-      SimpleNote.getNotes(token, email, function(notes){
+
+      SimpleNote.getNotes(token, email)
+      .done(function (notes) {
         var arr = notes.filter(function(note) {
           return !note.deleted;
         });
@@ -13,7 +17,8 @@ define(['simplenote'], function(SimpleNote){
           callback();
         }
         arr.forEach(function(note){
-          SimpleNote.getNote(token, email, note.key, function(note){
+          SimpleNote.getNote(token, email, note.key)
+          .done(function (note) {
             db.notes.add({
               key: note.key,
               createdate: note.createdate,
@@ -26,29 +31,29 @@ define(['simplenote'], function(SimpleNote){
             }).done(function(item) {
                 numNotes--;
                 if(numNotes === 0) {
-                  callback();
+                  defer.resolve();
                 }
             });
           });
         });
       });
     });
+
+    return defer.promise;
   }
 
-  function fetchNotes(db, callback) {
-    db.notes.query().all()
-    .execute()
-    .done(function(results) {
-      callback(results);
-    });
+  function fetchNotes(db) {
+    return db.notes.query().all().execute();
   }
 
-  function fetchNote(db, key, callback) {
+  function fetchNote(db, key) {
+    var defer = when.defer();
     db.notes.query().filter('key', key)
     .execute()
     .done(function(result) {
-      callback(result[0]);
+      defer.resolve(result[0]);
     });
+    return defer.promise;
   }
 
   return {
