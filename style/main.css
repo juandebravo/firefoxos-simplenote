@@ -6,3 +6,7 @@ body {
 #note-view {
   display: none;
 }
+
+#login-view {
+  display: none;
+}

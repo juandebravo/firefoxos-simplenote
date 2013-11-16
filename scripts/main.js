@@ -36,21 +36,21 @@ require([
   }
 
   if (!global.simpleNote.token) {
-    console.debug('No token found in localStorage, authenticating...')
-    global.simpleNote.email = 'drslump@pollinimini.net';
-    var password = 'foobar';
+    console.debug('No token found in localStorage, authenticating...');
+    $(["#notes-view", "#login-view"]).toggle();
+  } else {
+    SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
+  }
+
+  $('#login-button').click(function() {
+    global.simpleNote.email = document.querySelector('#email').value;
+    var password = document.querySelector('#password').value;
     SimpleNote.auth(global.simpleNote.email, password, function(data){
       console.debug('Token: %s', data);
       global.simpleNote.token = data;
       SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
     });
-  } else {
-    SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
-  }
 
-
-  $('#login').click(function() {
-    // login flow
   });
 
 });

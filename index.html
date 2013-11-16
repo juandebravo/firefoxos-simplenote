@@ -33,15 +33,25 @@
         </menu>
         <h1 data-l10n-id="app-title">Evernote</h1>
       </header>
-      <article id="login-view" class="view" role="region" data-page-position="viewport">
-        <button class="login" id="login">Login</button>
-      </article>
       <article id="notes-view" data-type="list">
         <ul>
           <li>Loading</li>
         </ul>
       </article>
       <article id="note-view" class="view" role="region" data-page-position="viewport">
+      </article>
+      <article id="login-view" class="view" role="region" data-page-position="viewport">
+        <form>
+          <p>
+            <input type="text" id="email" placeholder="Simplenote email" required="true">
+          </p>
+          <p>
+            <input type="password" id="password" placeholder="Password" required="true">
+          </p>
+          <p>
+            <button class="login" id="login-button">Login</button>
+          </p>
+        </form>
       </article>
     </section>
 
