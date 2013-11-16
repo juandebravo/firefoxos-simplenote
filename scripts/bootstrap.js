@@ -9,7 +9,8 @@ require.config({
     zeptojs: '../bower_components/zepto/zepto.min',
     underscore: '../bower_components/underscore/underscore-min',
     Base64: '../bower_components/js-base64/base64.min',
-    markdown: '../bower_components/markdown/lib/markdown'
+    markdown: '../bower_components/markdown/lib/markdown',
+    db: '../bower_components/db/index'
   },
   // Specific symbol aliasing for *browser* modules
   shim: {
@@ -29,7 +30,7 @@ require.config({
 });
 
 
-require(['zeptojs'], function ($) {
+require(['zeptojs', 'global', 'db'], function ($, global, db) {
   // Let's use our custom XHR factory to allow cross-domain requests
   $.ajaxSettings.xhr = function() {
     return new XMLHttpRequest({mozSystem: true});
@@ -44,6 +45,18 @@ require(['zeptojs'], function ($) {
       document.location.reload(true);
     }
     lastClick = ts;
+  });
+
+  db.open({
+      server: 'SimpleNote',
+      version: 1,
+      schema: {
+          notes: {
+              key: {keyPath: 'key' , autoIncrement: false },
+          }
+      }
+  }).done(function(s) {
+      global.db = s;
   });
 
   // The application is now fully bootstrapped!

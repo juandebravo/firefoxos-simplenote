@@ -3,35 +3,33 @@ require([
   'zeptojs',
   'markdown',
   'simplenote',
-  'global'
-], function (global, $, markdown, SimpleNote) {
+  'sync'
+], function (global, $, markdown, SimpleNote, sync) {
   'use strict';
 
   var ul = $('#notes-view ul');
 
   ul.on('click', 'a', function(e) {
-    SimpleNote.getNote(global.simpleNote.token,
-      global.simpleNote.email,
+    sync.fetchNote(global.db,
       this.getAttribute('data-key'),
       function(data) {
-        var content = markdown.toHTML(data.content);
+        var content = data.content;
+        if(data.systemtags.indexOf('markdown') != -1) {
+          content = markdown.toHTML(data.content);
+        }
         $("#notes-view").html(content);
         $("#notes-view", "#note-view").toggle();
       });
   });
 
-  function printNotes(notes) {
-    notes.sort(function(a, b){
-      return a.modifydate < b.modifydate;
-    });
+  function printNotes() {
     ul.empty();
-    notes.forEach(function(note) {
-      SimpleNote.getNote(global.simpleNote.token, global.simpleNote.email, note.key, function(data){
+    sync.fetchNotes(global.db, function(notes){
+      notes.forEach(function(data) {
         var info = data.content.split('\n');
         info = [i for each (i in info) if (i.length > 0)];
-        ul.append('<li><a href="#" data-key="'+note.key+'"><p>'+info[0]+'</p><p>'+info[1]+'</p></a></li>');
+        ul.append('<li><a href="#" data-key="'+data.key+'"><p>'+info[0]+'</p><p>'+info[1]+'</p></a></li>');
       });
-
     });
   }
 
@@ -39,12 +37,12 @@ require([
     console.debug('No token found in localStorage, authenticating...');
     $(["#notes-view", "#login-view"]).toggle();
   } else {
-    SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
+    sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email, printNotes);
   }
 
   $('#login-button').click(function(e) {
-    e.stopPropagation()
-    e.preventDefault()
+    e.stopPropagation();
+    e.preventDefault();
     global.simpleNote.email = $('#email').val();
     var password = $('#password').val();
     SimpleNote.auth(global.simpleNote.email, password, function(data){

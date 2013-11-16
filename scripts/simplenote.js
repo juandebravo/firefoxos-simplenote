@@ -1,6 +1,8 @@
 define(['zeptojs', 'Base64'], function
       ($, Base64) {
 
+  // System tags: pinned, markdown
+
   var HOST = 'https://simple-note.appspot.com/',
       pathLogin = 'api/login',
       pathNotes = 'api2/index',
