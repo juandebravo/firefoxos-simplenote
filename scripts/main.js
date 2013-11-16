@@ -17,8 +17,8 @@ require([
         if(data.systemtags.indexOf('markdown') != -1) {
           content = markdown.toHTML(data.content);
         }
-        $("#notes-view").html(content);
-        $("#notes-view", "#note-view").toggle();
+        $("#note-content").html(content);
+        $("#main-view, #note-view").toggle();
       });
   });
 
@@ -51,7 +51,12 @@ require([
       $('#notes-view, #login-view').toggle();
       SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
     });
+  });
 
+  $(".button-back").click(function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    $("#main-view, #note-view").toggle();
   });
 
 });

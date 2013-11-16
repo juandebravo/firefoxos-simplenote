@@ -3,6 +3,10 @@ body {
   margin: 0;
 }
 
+section[role="region"] > header .icon.icon-settings {
+  background-image: url(icons/settings.png);
+}
+
 #note-view {
   display: none;
 }
