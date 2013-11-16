@@ -1,5 +1,5 @@
-define(['zeptojs',
-'base64'], function($, Base64) {
+define(['zeptojs', 'Base64'], function
+      ($, Base64) {
 
   var HOST = 'https://simple-note.appspot.com/',
       pathLogin = 'api/login',
@@ -8,7 +8,7 @@ define(['zeptojs',
 
   function auth(email, password, callback) {
     $.post(HOST + pathLogin,
-           Base64.encode('email='+email+'&password='+password),
+           Base64.encode('email=' + email + '&password=' + password),
            callback);
   }
 
@@ -22,14 +22,15 @@ define(['zeptojs',
           mark: mark || ''},
         function(data) {
           results = results.concat(data.data);
+          // Keep asking for pages if there is a *mark*
           if (data.mark) {
-            getRecursiveNotes(data.mark);
-          } else {
-            callback(results);
+            return getRecursiveNotes(data.mark);
           }
+          callback(results);
         }
       );
     }
+    // Initiate the requests for notes indices
     getRecursiveNotes();
   }
 
