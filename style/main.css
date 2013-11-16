@@ -14,3 +14,7 @@ section[role="region"] > header .icon.icon-settings {
 #login-view {
   display: none;
 }
+
+#settings-view {
+  display: none;
+}

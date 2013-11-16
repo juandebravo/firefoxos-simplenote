@@ -9,6 +9,15 @@ require([
 
   var ul = $('#notes-view ul');
 
+  var views = ['#main-view', '#note-view', '#login-view', '#settings-view'];
+
+  function showView(view) {
+    views.forEach(function(v){
+      $(v).hide();
+    });
+    $(view).show();
+  }
+
   ul.on('click', 'a', function(e) {
     sync.fetchNote(global.db,
       this.getAttribute('data-key'),
@@ -18,7 +27,7 @@ require([
           content = markdown.toHTML(data.content);
         }
         $("#note-content").html(content);
-        $("#main-view, #note-view").toggle();
+        showView("#note-view");
       });
   });
 
@@ -35,7 +44,7 @@ require([
 
   if (!global.simpleNote.token) {
     console.debug('No token found in localStorage, authenticating...');
-    $(["#notes-view", "#login-view"]).toggle();
+    showView("#login-view");
   } else {
     sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email, printNotes);
   }
@@ -48,15 +57,29 @@ require([
     SimpleNote.auth(global.simpleNote.email, password, function(data){
       console.debug('Token: %s', data);
       global.simpleNote.token = data;
-      $('#notes-view, #login-view').toggle();
-      SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
+      showView("#main-view");
+      sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email, printNotes);
     });
   });
 
   $(".button-back").click(function(e) {
     e.stopPropagation();
     e.preventDefault();
-    $("#main-view, #note-view").toggle();
+    showView("#main-view");
+  });
+
+  $("#settings-open").click(function(e) {
+    showView("#settings-view");
+  });
+
+  $(".logout").click(function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    global.db.notes.clear().done(function() {
+      global.simpleNote.token = '';
+      global.simpleNote.email = '';
+      showView("#login-view");
+    });
   });
 
 });

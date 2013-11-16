@@ -38,7 +38,12 @@
           <li>Loading</li>
         </ul>
       </article>
-      <article id="login-view">
+    </section>
+    <section id="login-view" class="view" role="region" data-page-position="viewport">
+      <header>
+        <h1 data-l10n-id="app-title">Simplenote</h1>
+      </header>
+      <article>
         <form>
           <p>
             <input type="text" id="email" placeholder="Simplenote email" required="true">
@@ -59,6 +64,16 @@
       <article id="note-content">
       </article>
     </section>
+    <section id="settings-view" class="view" role="region" data-page-position="viewport">
+      <header>
+        <button class="button-back"><span class="icon icon-back">back</span></button>
+        <h1 data-l10n-id="app-title">Settings</h1>
+      </header>
+      <article id="settings-content">
+        <button class="logout" id="logout-button">Logout</button>
+      </article>
+    </section>
+
 
     <script data-main="scripts/bootstrap" src="bower_components/requirejs/require.js"></script>
   </body>
