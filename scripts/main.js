@@ -21,6 +21,7 @@ require([
   });
 
   function printNotes(notes) {
+    $('#notes-view, #login-view').toggle();
     notes.sort(function(a, b){
       return a.modifydate < b.modifydate;
     });
@@ -42,9 +43,11 @@ require([
     SimpleNote.getNotes(global.simpleNote.token, global.simpleNote.email, printNotes);
   }
 
-  $('#login-button').click(function() {
-    global.simpleNote.email = document.querySelector('#email').value;
-    var password = document.querySelector('#password').value;
+  $('#login-button').click(function(e) {
+    e.stopPropagation()
+    e.preventDefault()
+    global.simpleNote.email = $('#email').val();
+    var password = $('#password').val();
     SimpleNote.auth(global.simpleNote.email, password, function(data){
       console.debug('Token: %s', data);
       global.simpleNote.token = data;
