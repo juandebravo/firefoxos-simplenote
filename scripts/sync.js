@@ -9,17 +9,16 @@ define(['simplenote', 'when'], function(SimpleNote, when){
 
       SimpleNote.getNotes(token, email)
       .done(function (notes) {
-        var arr = notes.filter(function(note) {
+        notes = notes.filter(function(note) {
           return !note.deleted;
         });
-        var numNotes = arr.length;
-        if(numNotes === 0){
-          callback();
-        }
-        arr.forEach(function(note){
-          SimpleNote.getNote(token, email, note.key)
-          .done(function (note) {
-            db.notes.add({
+
+        var retrieve = [ SimpleNote.getNote(token, email, note.key) for each (note in notes) ];
+        when.all(retrieve)
+        .done(function (notes){
+          var store = [];
+          notes.forEach(function (note) {
+            var prom = db.notes.add({
               key: note.key,
               createdate: note.createdate,
               modifydate: note.modifydate,
@@ -28,13 +27,12 @@ define(['simplenote', 'when'], function(SimpleNote, when){
               deleted: note.deleted,
               tags: note.tags,
               systemtags: note.systemtags
-            }).done(function(item) {
-                numNotes--;
-                if(numNotes === 0) {
-                  defer.resolve();
-                }
             });
+            store.push(prom);
           });
+
+          when.all(store)
+          .done(defer.resolve);
         });
       });
     });

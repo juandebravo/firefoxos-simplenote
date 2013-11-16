@@ -55,12 +55,15 @@ require([
     e.preventDefault();
     global.simpleNote.email = $('#email').val();
     var password = $('#password').val();
-    SimpleNote.auth(global.simpleNote.email, password, function(data){
+    SimpleNote.auth(global.simpleNote.email, password)
+    .done(function (data) {
       console.debug('Token: %s', data);
       global.simpleNote.token = data;
       showView("#main-view");
       sync.syncNotes(global.db, global.simpleNote.token, global.simpleNote.email)
       .done(printNotes);
+    }, function (error) {
+      alert("Error authentication, please try again");
     });
   });
 

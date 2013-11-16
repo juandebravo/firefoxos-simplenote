@@ -8,10 +8,18 @@ define(['zeptojs', 'Base64', 'when'], function
       pathNotes = 'api2/index',
       pathNote  = 'api2/data/';
 
-  function auth(email, password, callback) {
-    $.post(HOST + pathLogin,
-           Base64.encode('email=' + email + '&password=' + password),
-           callback);
+  function auth(email, password) {
+    var defer = when.defer();
+    $.ajax({
+      type: 'POST',
+      url: HOST + pathLogin,
+      data: Base64.encode('email=' + email + '&password=' + password),
+      success: defer.resolve,
+      error: function(xhr, type) {
+        defer.reject(type);
+      }
+    })
+    return defer.promise;
   }
 
   function getNotes(token, email) {
