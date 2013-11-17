@@ -28,7 +28,7 @@ http://kendersec.github.io/SimpleNote/SimpleNote-API-v2.1.3.pdf
 
 The MIT License
 
-Copyright (c) 2013 [Iván -DrSlump- Montes, Juan de Bravo]
+Copyright (c) 2013 Iván -DrSlump- Montes, Juan de Bravo
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
